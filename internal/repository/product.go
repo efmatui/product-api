@@ -4,7 +4,13 @@ import (
 	"github.com/efmatui/product-api/internal/datastruct"
 )
 
-func GetAllProduct() ([]datastruct.Product, error) {
+type ProductQuery interface {
+	GetAllProduct() ([]datastruct.Product, error)
+}
+
+type productQuery struct{}
+
+func (p *productQuery) GetAllProduct() ([]datastruct.Product, error) {
 
 	var products []datastruct.Product
 	err := NewDB().Model(&products).Select()

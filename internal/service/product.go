@@ -7,10 +7,18 @@ import (
 	"github.com/efmatui/product-api/internal/repository"
 )
 
-func GetAllProduct() ([]datastruct.Product, error) {
+type ProductService interface {
+	GetAllProduct() ([]datastruct.Product, error)
+}
+
+type productService struct {
+	dao repository.DAO
+}
+
+func (u *productService) GetAllProduct() ([]datastruct.Product, error) {
 	var products []datastruct.Product
 	var err error
-	products, err = repository.GetAllProduct()
+	products, err = u.dao.NewProductQuery().GetAllProduct()
 	if err != nil {
 		log.Printf("error products %v", err)
 	}

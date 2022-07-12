@@ -5,9 +5,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllProduct() gin.HandlerFunc {
+type GetProduct interface {
+	GetAllProduct() gin.HandlerFunc
+}
+
+type getProduct struct {
+	getAllProduct service.DAO
+}
+
+func (p *getProduct) GetAllProduct() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		products, err := service.GetAllProduct()
+		products, err := p.getAllProduct.NewProductService().GetAllProduct()
 		if err != nil {
 			c.JSON(500, gin.H{"status": "Internal Server Error", "error": err})
 		} else {
